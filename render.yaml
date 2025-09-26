@@ -4,7 +4,9 @@ services:
   # A Redis instance for our Django Channels layer
   - name: redis
     type: pserv # Private Service
-    image: redis:alpine # This is the corrected, simplified syntax
+    # FIX #1: The 'image' key must be an object with a 'url' field.
+    image:
+      url: redis:alpine
     disk:
       name: redis-data
       mountPath: /data
@@ -14,10 +16,9 @@ services:
   - name: web
     type: web
     env: docker
-    # This build block is the corrected version
-    build:
-      context: ./backend
-      dockerfilePath: ./backend/Dockerfile
+    # FIX #2: Use 'dockerContext' and 'dockerfilePath' instead of 'build'.
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
     plan: starter
     healthCheckPath: /
     envVars:
