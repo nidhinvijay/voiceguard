@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VoiceGuard - Lobby</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center h-screen">
+    <div class="text-center p-8 bg-gray-800 rounded-lg shadow-xl">
+        <h1 class="text-4xl font-bold mb-6">VoiceGuard</h1>
+        <div class="space-y-4">
+            <button id="create-call-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                Create New Call
+            </button>
+            <div class="flex items-center space-x-2">
+                <input type="text" id="join-id-input" placeholder="Enter Call ID to Join" class="bg-gray-700 border border-gray-600 rounded w-full py-2 px-3 text-white focus:outline-none focus:border-indigo-500">
+                <button id="join-call-btn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                    Join
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+    document.getElementById('create-call-btn').onclick = () => {
+        // Generate a random ID for the call
+        const callId = Math.random().toString(36).substring(2, 9);
+        window.location.href = `/call/${callId}/`;
+    };
+
+    document.getElementById('join-call-btn').onclick = () => {
+        const callId = document.getElementById('join-id-input').value;
+        if (callId) {
+            window.location.href = `/call/${callId}/`;
+        } else {
+            alert("Please enter a Call ID to join.");
+        }
+    };
+    </script>
+</body>
+</html>

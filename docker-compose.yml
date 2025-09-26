@@ -1,0 +1,25 @@
+# voiceguard/docker-compose.yml
+
+version: '3.8'
+
+services:
+  # The Redis Service
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+
+  # The Django/Daphne Web Service
+  web:
+    build:
+      context: ./backend
+    command: daphne -b 0.0.0.0 -p 8000 voiceguard_project.asgi:application
+    volumes:
+      - ./backend:/app
+      - ./frontend:/app/frontend_static
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - redis

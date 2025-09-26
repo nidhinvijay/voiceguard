@@ -1,0 +1,46 @@
+# Python / Django
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+db.sqlite3
+/staticfiles/
+/venv/
+/env/
+/backend/venv/
+/backend/env/
+/backend/__pycache__/
+/backend/*.pyc
+/backend/*.pyo
+/backend/*.pyd
+/backend/db.sqlite3
+/backend/staticfiles/
+/backend/media/
+/backend/.venv/
+/backend/.env
+/backend/.mypy_cache/
+/backend/.pytest_cache/
+
+
+
+# Environment Variables & Secrets
+.env
+gcloud-credentials.json
+*.pem
+backend/gcloud-credentials.json
+backend/*.pem
+
+
+# Docker
+docker-compose.override.yml
+
+# IDE / Editor specific
+.vscode/
+.idea/
+
+# Operating System specific
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
