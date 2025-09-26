@@ -78,16 +78,16 @@ ASGI_APPLICATION = 'voiceguard_project.asgi.application'
 # Configure the channel layer to use Redis
 # Use the REDIS_HOST environment variable if it exists (for Docker),
 # otherwise default to localhost (for local development without Docker).
-REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')
+# REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [(REDIS_HOST, 6379)],
-        },
-    },
-}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [(REDIS_HOST, 6379)],
+#         },
+#     },
+# }
 
 
 # Database

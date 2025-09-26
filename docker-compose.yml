@@ -3,17 +3,12 @@
 version: '3.8'
 
 services:
-  # The Redis Service
-  redis:
-    image: "redis:alpine"
-    ports:
-      - "6379:6379"
-
   # The Django/Daphne Web Service
   web:
     build:
       context: ./backend
-    command: daphne -b 0.0.0.0 -p 8000 voiceguard_project.asgi:application
+    # Use Django's development server with auto-reload
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./backend:/app
       - ./frontend:/app/frontend_static
@@ -21,5 +16,3 @@ services:
       - "8000:8000"
     env_file:
       - ./backend/.env
-    depends_on:
-      - redis
