@@ -4,8 +4,7 @@ services:
   # A Redis instance for our Django Channels layer
   - name: redis
     type: pserv # Private Service
-    image:
-      url: redis:alpine
+    image: redis:alpine # This is the corrected, simplified syntax
     disk:
       name: redis-data
       mountPath: /data
@@ -15,11 +14,13 @@ services:
   - name: web
     type: web
     env: docker
-    dockerfilePath: ./backend/Dockerfile
-    plan: starter # Choose a plan, 'starter' is good for demos
+    # This build block is the corrected version
+    build:
+      context: ./backend
+      dockerfilePath: ./backend/Dockerfile
+    plan: starter
     healthCheckPath: /
     envVars:
-      # These tell Django how to connect to the Redis service
       - key: REDIS_HOST
         fromService:
           type: pserv
@@ -31,13 +32,11 @@ services:
           name: redis
           property: port
       
-      # Tell Django we are in production
       - key: DEBUG
         value: False
       
-      # Your secret keys should be added in the Render dashboard, not here
       - key: DJANGO_SECRET_KEY
-        generateValue: true # Render can generate a secure key for you
+        generateValue: true
       - key: PERSPECTIVE_API_KEY
         sync: false
       - key: GROQ_API_KEY
