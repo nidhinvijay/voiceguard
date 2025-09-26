@@ -4,9 +4,7 @@ services:
   # A Redis instance for our Django Channels layer
   - name: redis
     type: pserv # Private Service
-    # FIX #1: The 'image' key must be an object with a 'url' field.
-    image:
-      url: redis:alpine
+    image: redis:alpine # Corrected to a single line
     disk:
       name: redis-data
       mountPath: /data
@@ -16,11 +14,10 @@ services:
   - name: web
     type: web
     env: docker
-    # FIX #2: Use 'dockerContext' and 'dockerfilePath' instead of 'build'.
     dockerContext: ./backend
     dockerfilePath: ./backend/Dockerfile
-    # FIX #3: Add startCommand for Django/Daphne
-    startCommand: "daphne -b 0.0.0.0 -p $PORT voiceguard.asgi:application"
+    # Corrected the project name from 'voiceguard' to 'voiceguard_project'
+    startCommand: "daphne -b 0.0.0.0 -p $PORT voiceguard_project.asgi:application"
     plan: starter
     healthCheckPath: /
     envVars:
