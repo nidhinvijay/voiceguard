@@ -7,8 +7,8 @@ services:
     env: docker
     dockerContext: ./backend
     dockerfilePath: ./backend/Dockerfile
-    startCommand: "daphne -b 0.0.0.0 -p $PORT voiceguard_project.asgi:application"
-    plan: starter
+    # startCommand: "daphne -b 0.0.0.0 -p $PORT voiceguard_project.asgi:application"
+    # plan: starter
     healthCheckPath: /
     envVars:
       # NOTE: REDIS_HOST and REDIS_PORT are now removed
