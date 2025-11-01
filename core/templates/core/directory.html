@@ -1,0 +1,65 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Directory · VoiceGuard{% endblock %}
+{% block appbar-title %}Directory{% endblock %}
+{% block tab_directory_active %}is-active{% endblock %}
+
+{% block content %}
+<section class="container">
+  <div class="card">
+    <!-- Search form stays; we hijack it with JS so the page doesn't navigate to JSON -->
+    <form id="dir-search-form" class="stack gap-12" action="{% url 'directory_search' %}" method="get">
+      <div class="input-row">
+        <input id="dir-q" class="input input-lg" name="q" placeholder="Search by name or phone" autocomplete="off" />
+        <button class="btn btn-primary" type="submit">Search</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- FRIENDS (Contacts) — shown immediately -->
+  <div class="stack gap-12">
+    <div class="section-title">Your friends</div>
+    <div id="dir-contacts">
+      {% if contacts %}
+        {% for c in contacts %}
+          <div class="cell">
+            <div class="cell__main">
+              <div class="cell__title">{{ c.peer.display_name|default:c.peer.username }}</div>
+              <div class="cell__sub">{{ c.peer.phone_number }}</div>
+            </div>
+            <div class="cell__actions">
+              <!-- Direct CALL: goes to main page and auto-dials -->
+              <a class="chip chip-success" href="/?dial={{ c.peer.phone_number|urlencode }}">Call</a>
+              <!-- Keep existing block action -->
+              <form action="{% url 'contacts_block' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="phone" value="{{ c.peer.phone_number }}" />
+                <button class="chip chip-danger" type="submit">Block</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="muted small">No friends yet. Search users and send a request.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- SEARCH RESULTS / PENDING: filled by JS after you search -->
+  <div class="stack gap-12">
+    <div id="dir-results-section" style="display:none;">
+      <div class="section-title">Results</div>
+      <div id="dir-results"></div>
+    </div>
+
+    <div id="dir-pending-section" style="display:none;">
+      <div class="section-title">Pending</div>
+      <div id="dir-pending"></div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script defer src="{% static 'js/directory-ui.js' %}"></script>
+{% endblock %}

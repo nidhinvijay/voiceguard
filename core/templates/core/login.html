@@ -1,0 +1,30 @@
+{% extends "core/base.html" %}
+{% block title %}Login · VoiceGuard{% endblock %}
+{% block appbar-title %}Login{% endblock %}
+{% block content %}
+<section class="container narrow">
+  <div class="stack gap-16">
+    <div class="hero">
+      <div class="hero__icon">🔐</div>
+      <h2 class="hero__title">Welcome back</h2>
+      <p class="muted center small">Sign in to continue calling safely.</p>
+    </div>
+    <form method="post" class="card form">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="field">
+        <label>Username</label>
+        {{ form.username }}
+      </div>
+      <div class="field">
+        <label>Password</label>
+        {{ form.password }}
+      </div>
+      <button class="btn btn-solid">Login</button>
+    </form>
+    <p class="muted center small">
+      New here? <a class="link" href="{% url 'signup' %}">Create an account</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

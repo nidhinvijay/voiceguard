@@ -1,0 +1,6 @@
+steps:
+- name: gcr.io/cloud-builders/docker
+  args: ["build", "-t", "gcr.io/core-forklift-472604-f8/voiceguard:latest", "."]
+
+images:
+- "gcr.io/core-forklift-472604-f8/voiceguard:latest"

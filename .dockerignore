@@ -1,0 +1,35 @@
+# .dockerignore
+
+# Python / venv
+venv/
+.venv/
+__pycache__/
+# *.pyc
+*.pyo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git & IDE
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Build outputs
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+logs/
+
+# Environment / secrets
+.env
+.env.*
+gcloud-credentials.json
+
+# Node/npm if you ever add front-end build
+node_modules/

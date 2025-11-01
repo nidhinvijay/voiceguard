@@ -1,0 +1,18 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}History · VoiceGuard{% endblock %}
+{% block appbar-title %}History{% endblock %}
+{% block tab_history_active %}is-active{% endblock %}
+
+{% block content %}
+<section class="container">
+  <div class="card">
+    <div class="label">Recent calls</div>
+    <div id="hist-list" class="list"></div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script defer src="{% static 'js/history-ui.js' %}"></script>
+{% endblock %}

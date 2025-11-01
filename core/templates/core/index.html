@@ -1,0 +1,82 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Call · VoiceGuard{% endblock %}
+{% block appbar-title %}Call{% endblock %}
+{% block tab_home_active %}is-active{% endblock %}
+{% block head %}
+<script defer src="{% static 'js/twilio-voice.min.js' %}"></script>
+<script defer src="{% static 'js/voiceguard.js' %}"></script>
+{% endblock %}
+{% block content %}
+<section class="container">
+  <!-- Dial Card -->
+  <div class="card">
+    <div class="stack gap-12">
+      <label class="label">Call someone</label>
+      <div class="input-row">
+        <input id="peer-phone-input" class="input input-lg" inputmode="numeric" pattern="[0-9+]*" placeholder="+91XXXXXXXXXX" />
+        <span id="peer-lifetime-badge" class="badge"></span>
+      </div>
+
+      <div class="row gap-8 wrap">
+        <div class="col grow">
+          <select id="language-select" class="input">
+            <option value="en-US">English (US)</option>
+            <option value="ml-IN">Malayalam (IN)</option>
+          </select>
+        </div>
+        <button id="call-button" class="btn btn-primary fab">📞</button>
+        <button id="hang-button" class="btn btn-danger fab" disabled>⛔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Moderation Controls -->
+  <div class="card">
+    <div class="row gap-8">
+      <button id="transcribe-button" class="btn btn-tonal grow" disabled>Start Transcription</button>
+      <button id="start-audio-button" class="btn btn-tonal grow" style="display:none;">Enable Audio</button>
+    </div>
+  </div>
+
+  <!-- Live Log -->
+  <div class="card">
+    <div class="label">Live transcript & tips</div>
+    <div id="log" class="log"></div>
+  </div>
+</section>
+
+<!-- Incoming Call Modal -->
+<dialog id="incoming-modal" class="sheet">
+  <div class="sheet__handle"></div>
+  <div class="sheet__content">
+    <div class="hero compact">
+      <div class="hero__icon">📲</div>
+      <h3 class="hero__title small">Incoming call</h3>
+      <p id="incoming-meta" class="center"></p>
+    </div>
+    <div class="row gap-8">
+      <button id="accept-btn" class="btn btn-solid grow">Accept</button>
+      <button id="decline-btn" class="btn btn-danger grow">Decline</button>
+    </div>
+    <form method="dialog">
+      <button class="btn w-full">Close</button>
+    </form>
+  </div>
+</dialog>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const callInput = document.querySelector("#peer-phone-input");
+  if (callInput) {
+    if (!callInput.value.startsWith("+91")) {
+      callInput.value = "+91";
+    }
+    callInput.addEventListener("input", function() {
+      if (!this.value.startsWith("+91")) {
+        this.value = "+91";
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

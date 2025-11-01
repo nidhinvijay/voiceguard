@@ -1,0 +1,13 @@
+Django==5.2.7
+channels==4.1.0
+channels-redis
+gunicorn
+uvicorn[standard]
+python-dotenv
+google-cloud-speech
+twilio
+requests
+groq
+whitenoise
+dj-database-url
+phonenumbers    # Reliable E.164 parsing/validation

@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}VoiceGuard{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <!-- PWA / Mobile meta -->
+  <meta name="theme-color" content="#0b57d0" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- Favicon (prevents 404s) -->
+  <link rel="icon" href="{% static 'favicon.ico' %}" sizes="any">
+
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body class="vg-body">
+  <!-- SAFE AREA FILL -->
+  <div class="safe-top"></div>
+
+  <!-- APP BAR -->
+  <header class="appbar">
+    <div class="appbar__left">
+      {% block appbar-left %}{% endblock %}
+    </div>
+    <h1 class="appbar__title">{% block appbar-title %}VoiceGuard{% endblock %}</h1>
+    <div class="appbar__right">
+      {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button class="link-btn" aria-label="Log out">Logout</button>
+        </form>
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- PAGE WRAPPER -->
+  <main class="page" id="app-page">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- BOTTOM TAB BAR -->
+  <nav class="tabbar">
+    <a class="tabbar__item {% block tab_home_active %}{% endblock %}" href="{% url 'index' %}" aria-label="Home">
+      <span class="tabbar__icon">📞</span>
+      <span class="tabbar__label">Call</span>
+    </a>
+    <a class="tabbar__item {% block tab_directory_active %}{% endblock %}" href="{% url 'directory_page' %}" aria-label="Directory">
+      <span class="tabbar__icon">👥</span>
+      <span class="tabbar__label">Directory</span>
+    </a>
+    <a class="tabbar__item {% block tab_history_active %}{% endblock %}" href="{% url 'history_page' %}" aria-label="History">
+      <span class="tabbar__icon">🕘</span>
+      <span class="tabbar__label">History</span>
+    </a>
+    {% if user.is_authenticated %}
+    <a class="tabbar__item" href="#" aria-label="Profile" onclick="document.getElementById('profileSheet').showModal()">
+      <span class="tabbar__icon">👤</span>
+      <span class="tabbar__label">Profile</span>
+    </a>
+    {% else %}
+    <a class="tabbar__item" href="{% url 'login' %}" aria-label="Login">
+      <span class="tabbar__icon">➡️</span>
+      <span class="tabbar__label">Login</span>
+    </a>
+    {% endif %}
+  </nav>
+
+  <!-- PROFILE BOTTOM SHEET -->
+  <dialog id="profileSheet" class="sheet">
+    <div class="sheet__handle"></div>
+    <div class="sheet__content">
+      <h2 class="sheet__title">Profile</h2>
+      {% if user.is_authenticated %}
+        <div class="card">
+          <div class="row">
+            <div class="col">
+              <div class="label">Display name</div>
+              <div class="value">{{ user.display_name|default:user.username }}</div>
+            </div>
+            <div class="col">
+              <div class="label">Phone</div>
+              <div class="value">{{ user.phone_number }}</div>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <p class="muted">You’re not logged in.</p>
+      {% endif %}
+      <form method="dialog">
+        <button class="btn btn-solid w-full">Close</button>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- SAFE AREA FILL -->
+  <div class="safe-bottom"></div>
+
+  {% block scripts %}{% endblock %}
+<script>
+  (function resumeAudioOnGesture() {
+    try {
+      const hasAudioCtx = 'AudioContext' in window || 'webkitAudioContext' in window;
+      if (!hasAudioCtx) return;
+
+      let ctx = window.__vgAudioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      window.__vgAudioCtx = ctx;
+
+      if (ctx.state === 'running') return;
+
+      const resume = () => {
+        ctx.resume && ctx.resume();
+        if (ctx.state === 'running') {
+          window.removeEventListener('pointerdown', resume, true);
+          window.removeEventListener('keydown', resume, true);
+          window.removeEventListener('touchend', resume, true);
+        }
+      };
+      window.addEventListener('pointerdown', resume, true);
+      window.addEventListener('keydown', resume, true);
+      window.addEventListener('touchend', resume, true);
+    } catch (e) { /* no-op */ }
+  })();
+</script>
+</body>
+</html>

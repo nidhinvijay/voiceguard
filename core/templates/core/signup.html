@@ -1,0 +1,62 @@
+{% extends "core/base.html" %}
+{% block title %}Sign up · VoiceGuard{% endblock %}
+{% block appbar-title %}Sign up{% endblock %}
+{% block content %}
+<section class="container narrow">
+  <div class="stack gap-16">
+    <div class="hero">
+      <div class="hero__icon">✨</div>
+      <h2 class="hero__title">Create your account</h2>
+      <p class="muted center small">One step to safer voice calls.</p>
+    </div>
+    <form method="post" class="card form">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="field">
+        <label>Username</label>
+        {{ form.username }}
+      </div>
+      <div class="field">
+        <label>Display name</label>
+        {{ form.display_name }}
+      </div>
+      <div class="field">
+        <label>Phone number (+91XXXXXXXXXX)</label>
+        {{ form.phone_number }}
+        <div class="hint">{{ form.phone_number.help_text }}</div>
+      </div>
+      <div class="field">
+        <label>Email (optional)</label>
+        {{ form.email }}
+      </div>
+      <div class="field">
+        <label>Password</label>
+        {{ form.password1 }}
+      </div>
+      <div class="field">
+        <label>Confirm password</label>
+        {{ form.password2 }}
+      </div>
+      <button class="btn btn-solid">Create account</button>
+    </form>
+    <p class="muted center small">
+      Have an account? <a class="link" href="{% url 'login' %}">Log in</a>
+    </p>
+  </div>
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const phoneInput = document.querySelector("#id_phone_number");
+    if (phoneInput) {
+        if (!phoneInput.value.startsWith("+91")) {
+            phoneInput.value = "+91";
+        }
+        phoneInput.addEventListener("input", function() {
+            if (!this.value.startsWith("+91")) {
+                this.value = "+91";
+            }
+        });
+    }
+});
+</script>
+</section>
+{% endblock %}
